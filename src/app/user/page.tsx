@@ -18,7 +18,23 @@ import {
 } from "@/components/ui/sheet"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { XIcon } from "lucide-react";
+import { toast } from "sonner"
 
+
+const handleSubmit = () => {
+  toast("usuário adicionado com sucesso!", {
+    duration: 5000,
+    onDismiss: () => {
+      console.log("Toast dismissed");
+    },
+    action: (
+      <Button onClick={() => toast.dismiss()} variant="outline" className="px-4 py-2.5 rounded-full border h-10 w-[89px] border-[#E4E4E7]">
+        Fechar
+      </Button>
+    ),
+  });
+};
 
 function User() {
   return (
@@ -33,34 +49,86 @@ function User() {
               <span className="text-[14px]">Adicionar</span>
             </Button>
           </SheetTrigger>
-          <SheetContent>
-            <SheetHeader>
-              <SheetTitle>Edit profile</SheetTitle>
-              <SheetDescription>
-                Make changes to your profile here. Click save when you're done.
-              </SheetDescription>
-            </SheetHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="name" className="text-right">
-                  Name
-                </Label>
-                <Input id="name" value="Pedro Duarte" className="col-span-3" />
+
+          <SheetContent className="w-[560px]">
+            <SheetHeader className="px-10 pt-10">
+              <div className="flex items-center justify-between">
+                <SheetTitle className="font-noto text-2xl text-[#18181B]">
+                  Adicionar Usuário
+                </SheetTitle>
+
+                <SheetClose asChild>
+                  <Button
+                    className='ml-2 rounded-full bg-transparent border border-[#e4e4e7] text-[#18181B] w-[40px] h-[40px]'
+                    size="icon"
+                  >
+                    <XIcon />
+                  </Button>
+                </SheetClose>
               </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="username" className="text-right">
-                  Username
-                </Label>
-                <Input id="username" value="@peduarte" className="col-span-3" />
+            </SheetHeader>
+
+            <div className="grid gap-5 px-10 mt-1">
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="name" className="font-medium text-sm text-[#18181B]">Nome Completo</Label>
+                <Input id="name" placeholder="Digite o nome" className="h-10 w-full shadow-none outline-none rounded-md border border-[#e4e4e7] placeholder:text-[#71717A] placeholder:text-sm" />
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="username" className="font-medium text-sm text-[#18181B]">E-mail</Label>
+                <Input id="username" placeholder="Digite o e-mail" className="h-10 w-full shadow-none outline-none rounded-md border border-[#e4e4e7]" />
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="telefone" className="font-medium text-sm text-[#18181B]">Telefone</Label>
+                <Input id="telefone" placeholder="Informe o telefone" className="h-10 w-full shadow-none outline-none rounded-md border border-[#e4e4e7]" />
+                <label className="flex items-center gap-2 text-sm cursor-pointer">
+                  <input type="checkbox" className="accent-[#102822] w-4 h-4" />
+                  WhatsApp
+                </label>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="cpf" className="font-medium text-sm text-[#18181B]">CPF</Label>
+                  <Input id="cpf" placeholder="Informe o CPF" className="h-10 w-full shadow-none outline-none rounded-md border border-[#e4e4e7]" />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="rg" className="font-medium text-sm text-[#18181B]">RG</Label>
+                  <Input id="rg" placeholder="Informe o RG" className=" h-10 w-full shadow-none outline-none rounded-md border border-[#e4e4e7]" />
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between h-[66px] bg-[#FAFAFA] p-4 border border-[#E4E4E7] rounded-md">
+                <div className="flex flex-col">
+                  <Label htmlFor="status" className="font-medium text-sm text-[#18181B]">Status</Label>
+                  <p className="text-xs text-muted-foreground">
+                    Defina se o usuário estará ativo ao ser adicionado.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <label className="relative inline-flex items-center cursor-pointer w-12 h-12">
+                    <input type="checkbox" className="sr-only peer" />
+                    <div className="w-12 h-6 bg-gray-300 rounded-full peer peer-checked:bg-[#102822] transition-all peer-focus:ring-2 peer-focus:ring-[#102822]"></div>
+                    <div className="absolute  bg-white w-5 h-5 rounded-full transition-all peer-checked:translate-x-full peer-checked:left-1"></div>
+                  </label>
+                  <span className="text-sm font-medium text-[#18181B]">Ativo</span>
+                </div>
               </div>
             </div>
-            <SheetFooter>
+
+            <SheetFooter className="px-10">
               <SheetClose asChild>
-                <Button type="submit">Save changes</Button>
+                <div className="flex justify-end gap-3">
+                  <Button type="submit" variant="outline" className="px-4 py-2.5 rounded-full border h-10 w-[89px] border-[#E4E4E7]">Cancelar</Button>
+                  <Button type="submit" className=" px-4 py-2.5 rounded-full border h-10 w-[89px]" onClick={handleSubmit}>Adicionar</Button>
+                </div>
               </SheetClose>
             </SheetFooter>
           </SheetContent>
         </Sheet>
+
 
       </div>
 
