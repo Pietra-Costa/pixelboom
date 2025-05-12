@@ -1,3 +1,5 @@
+"use client"
+
 import { Settings, Activity, User, FileCheck, ChevronDown, ChevronsUpDown, Sparkles, BadgeCheck, CreditCard, Bell, LogOut, Headset } from "lucide-react";
 
 import {

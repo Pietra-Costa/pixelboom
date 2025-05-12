@@ -1,3 +1,5 @@
+"use client"
+
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import React from "react";
 import { CircleHelp } from "lucide-react";
