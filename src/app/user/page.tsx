@@ -100,7 +100,6 @@ const User = () => {
   }));
 
   return (
-
     <div className="w-full">
       <Navbar />
 
@@ -224,13 +223,9 @@ const User = () => {
           </div >
         </div>
 
-        <Users users={usersWithLabels} />
+        <Users initialUsers={usersWithLabels} />
       </div>
     </div>
-
-
-
-
   );
 };
 
