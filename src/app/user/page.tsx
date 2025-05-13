@@ -30,39 +30,6 @@ const User = () => {
     fetchUsers();
   }, []);
 
-  // const handleSubmit = async () => {
-  //   const name = (document.getElementById("name") as HTMLInputElement)?.value;
-  //   const email = (document.getElementById("username") as HTMLInputElement)?.value;
-  //   const telefone = (document.getElementById("telefone") as HTMLInputElement)?.value;
-  //   const cpf = (document.getElementById("cpf") as HTMLInputElement)?.value;
-  //   const rg = (document.getElementById("rg") as HTMLInputElement)?.value;
-  //   const isWhatsapp = (document.querySelector("input[type=checkbox]") as HTMLInputElement)?.checked;
-  //   const age = parseInt((document.getElementById("age") as HTMLInputElement)?.value || "0");
-
-
-  //   try {
-  //     const newUser = await createUser({
-  //       id: uuidv4(),
-  //       name,
-  //       email,
-  //       phone: telefone,
-  //       cpf,
-  //       rg,
-  //       isWhatsApp: isWhatsapp,
-  //       active,
-  //       age,
-  //       gender,
-  //       sessionTime: new Date().toISOString(),
-  //       lastLogin: new Date().toISOString(),
-  //     });
-
-  //     setUsers((prevUsers) => [...prevUsers, newUser]);
-  //     toast("Usuário adicionado com sucesso!", { duration: 5000 });
-  //   } catch (error) {
-  //     toast.error("Erro ao adicionar usuário.");
-  //     console.error("Erro:", error);
-  //   }
-  // };
 
   const handleSubmit = async () => {
     const name = (document.getElementById("name") as HTMLInputElement)?.value;
@@ -84,13 +51,24 @@ const User = () => {
         isWhatsApp: isWhatsapp,
         active,
         age,
-        gender,  // Passa o valor numérico do gender diretamente
+        gender,
         sessionTime: new Date().toISOString(),
         lastLogin: new Date().toISOString(),
       });
 
       setUsers((prevUsers) => [...prevUsers, newUser]);
-      toast("Usuário adicionado com sucesso!", { duration: 5000 });
+
+      toast("Usuário adicionado com sucesso!", {
+        duration: 5000,
+        onDismiss: () => {
+          console.log("Toast dismissed");
+        },
+        action: (
+          <Button onClick={() => toast.dismiss()} variant="outline" className="px-4 py-2.5 ml-4 rounded-full border h-10 w-[89px] border-[#E4E4E7]">
+            Fechar
+          </Button>
+        ),
+      });
     } catch (error) {
       toast.error("Erro ao adicionar usuário.");
       console.error("Erro:", error);

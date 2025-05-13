@@ -21,8 +21,7 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { IoMdMore } from "react-icons/io";
-
-
+import { format } from 'date-fns';
 
 function getInitials(fullName: string) {
     const names = fullName.trim().split(' ');
@@ -49,7 +48,21 @@ function Users() {
             try {
                 const dataFromApi = await getUsers();
                 const combined = [...dataFromApi, ...mockUsers];
-                setUsers(combined);
+
+                const sortedUsers = combined.sort((a, b) => {
+                    if (a.sessionTime && b.sessionTime) {
+                        const timeA = Number(new Date(a.sessionTime).getTime());
+                        const timeB = Number(new Date(b.sessionTime).getTime());
+
+                        return timeB - timeA;
+                    }
+                    const idA = Number(a.id);
+                    const idB = Number(b.id);
+
+                    return idB - idA;
+                });
+
+                setUsers(sortedUsers);
             } catch (error) {
                 console.error('Erro ao buscar usuários:', error);
                 setUsers(mockUsers);
@@ -60,75 +73,84 @@ function Users() {
             }
         }
 
-        // Chama loadUsers a cada 5 segundos
         const intervalId = setInterval(loadUsers, 5000);
 
-        // Chama loadUsers imediatamente na montagem
         loadUsers();
 
-        // Limpa o intervalo quando o componente é desmontado
         return () => clearInterval(intervalId);
     }, []);
 
-    if (loading) return <p className="p-10">Carregando usuários...</p>;
 
+    if (loading) return <p className="p-10">Carregando usuários...</p>;
 
     return (
         <div className="mt-5 ml-10 mr-10 space-y-4">
-            {users.map((user) => (
-                <div
-                    key={user.id}
-                    className="flex items-center h-24 mb-5 justify-between pl-3 pr-4 py-4 border rounded-xl border-[#E4E4E7]"
-                >
-                    <div className="flex items-center space-x-3">
-                        <Avatar className="h-14 w-14 rounded-lg">
-                            <AvatarFallback className="rounded-full text-base font-medium">
-                                {getInitials(user.name)}
-                            </AvatarFallback>
-                        </Avatar>
+            {users.map((user) => {
+                const isApiUser = user.hasOwnProperty('lastLogin') && user.hasOwnProperty('sessionTime');
 
-                        <div className="flex flex-col justify-center">
-                            <div className="flex items-center gap-3">
-                                <span className="font-medium font-inter text-sm text-[#18181B]">{user.name}</span>
-                                <span className="flex items-center gap-1 text-[#71717A] text-sm font-normal">
-                                    <FiUser className="text-[#A1A1AA] text-xs w-3 h-3 font-inter" />
-                                    {user.age} anos, {getGenderLabel(user.gender)}
-                                </span>
+                const hasValidDate = isApiUser && user.lastLogin && !isNaN(new Date(user.lastLogin).getTime());
+                const formattedLastLogin = hasValidDate
+                    ? format(new Date(user.lastLogin), "dd/MM/yyyy - hh:mmaaa", { locale: ptBR })
+                    : user.lastLogin;
+
+                const formattedSessionTime = isApiUser && user.sessionTime
+                    ? (new Date(user.sessionTime).getTime() && !isNaN(new Date(user.sessionTime).getTime()))
+                        ? new Date(user.sessionTime).toISOString().substr(11, 8).replace(":", "min").replace(":", "s") + "ms"
+                        : user.sessionTime
+                    : user.sessionTime;
+
+                return (
+                    <div
+                        key={user.id}
+                        className="flex items-center h-24 mb-5 justify-between pl-3 pr-4 py-4 border rounded-xl border-[#E4E4E7]"
+                    >
+                        <div className="flex items-center space-x-3">
+                            <Avatar className="h-14 w-14 rounded-lg">
+                                <AvatarFallback className="rounded-full text-base font-medium">
+                                    {getInitials(user.name)}
+                                </AvatarFallback>
+                            </Avatar>
+
+                            <div className="flex flex-col justify-center">
+                                <div className="flex items-center gap-3">
+                                    <span className="font-medium font-inter text-sm text-[#18181B]">{user.name}</span>
+                                    <span className="flex items-center gap-1 text-[#71717A] text-sm font-normal">
+                                        <FiUser className="text-[#A1A1AA] text-xs w-3 h-3 font-inter" />
+                                        {user.age} anos, {getGenderLabel(user.gender)}
+                                    </span>
+                                </div>
+
+                                <div className="flex gap-3 text-sm text-gray-700 mt-1">
+                                    <span className="flex items-center gap-1">
+                                        <CiCalendar className='text-[#A1A1AA] text-xs w-3 h-3' />
+                                        <p className='font-inter text-[#71717A] text-xs font-normal'>{formattedLastLogin}</p>
+                                    </span>
+
+                                    <span className="flex items-center gap-1">
+                                        <CiClock2 className='text-[#A1A1AA] text-xs w-3 h-3' />
+                                        <p className='font-inter text-[#71717A] text-xs font-normal'>{formattedSessionTime}</p>
+                                    </span>
+
+                                    <span className="flex items-center gap-1">
+                                        <LuTag className='text-[#A1A1AA] text-xs w-3 h-3' />
+                                        <p className='font-inter text-[#71717A] text-xs font-normal'>Usuário Padrão</p>
+                                    </span>
+                                </div>
                             </div>
+                        </div>
 
-                            <div className="flex gap-3 text-sm text-gray-700 mt-1">
+                        <div className="flex items-center gap-6">
+                            <span
+                                className={`text-xs font-semibold ${user.active ? 'bg-[#F4F4F5] text-[#18181B] w-[49px] h-5 rounded-full flex items-center justify-center' : 'bg-white border border-[#e4e4e7] text-[#18181B] w-[57px] h-5 rounded-full flex items-center justify-center'}`}
+                            >
+                                {user.active ? 'Ativo' : 'Inativo'}
+                            </span>
 
-                                <span className="flex items-center gap-1">
-                                    <CiCalendar className='text-[#A1A1AA] text-xs  w-3 h-3' />
-                                    <p className=' font-inter text-[#71717A] text-xs  font-normal'>{user.lastLogin}</p>
-                                </span>
-
-                                <span className="flex items-center gap-1">
-                                    <CiClock2 className='text-[#A1A1AA] text-xs  w-3 h-3' />
-                                    <p className=' font-inter text-[#71717A] text-xs font-normal'>{user.sessionTime}</p>
-                                </span>
-
-                                <span className="flex items-center gap-1">
-                                    <LuTag className='text-[#A1A1AA] text-xs  w-3 h-3' />
-                                    <p className=' font-inter text-[#71717A] text-xs font-normal'>Usuário Padrão</p>
-                                </span>
-
-                            </div>
-
+                            <button><IoMdMore /></button>
                         </div>
                     </div>
-
-                    <span
-                        className={`text-xs font-semibold ${user.active ? 'bg-[#F4F4F5] text-[#18181B] w-[49px] h-5 rounded-full flex items-center justify-center' : 'bg-white border border-[#e4e4e7] text-[#18181B] w-[57px] h-5 rounded-full flex items-center justify-center'}`}
-                    >
-                        {user.active ? 'Ativo' : 'Inativo'}
-                    </span>
-
-                    <button><IoMdMore /></button>
-
-                </div>
-
-            ))}
+                );
+            })}
 
             <div className="flex items-center justify-between mb-10 mt-1">
                 <div className="text-sm text-[#74747a]">
@@ -158,7 +180,6 @@ function Users() {
                     </PaginationContent>
                 </Pagination>
 
-
                 <div className="flex items-center">
                     <span className="text-sm text-[#74747a] mr-2">Itens por página:</span>
                     <Select defaultValue="10">
@@ -173,10 +194,8 @@ function Users() {
                     </Select>
                 </div>
             </div>
-        </div >
-
+        </div>
     );
 }
 
 export default Users;
-

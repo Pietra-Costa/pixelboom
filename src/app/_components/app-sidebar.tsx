@@ -24,9 +24,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useRouter } from 'next/router';
 
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useEffect, useState } from "react";
 
 const items = [
   {
@@ -95,21 +97,33 @@ export function AppSidebar() {
               </DropdownMenuContent>
             </DropdownMenu>
             <SidebarGroupLabel className="font-normal text-xs text-[#3F3F46] mt-4 mb-3.5 font-inter">Menu</SidebarGroupLabel>
-
             <SidebarGroupContent>
               <SidebarMenu className="pl-1">
                 {items
                   .filter(item => item.title !== "Geral")
-                  .map(item => (
-                    <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton asChild>
-                        <a href={item.url}>
-                          <item.icon className="text-[#71717A]" />
-                          <span className="pl-3 text-[#71717A font-inter]">{item.title}</span>
-                        </a>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))}
+                  .map(item => {
+                    const isActive = item.title === "Usuários";
+
+                    return (
+                      <SidebarMenuItem
+                        className={`py-2 ${isActive ? 'w-[208px] bg-black text-white rounded-full' : 'hover:bg-transparent'}`}
+                        key={item.title}
+                      >
+                        <SidebarMenuButton asChild>
+                          <a
+                            href={item.url}
+                            className={`${isActive ? 'text-white' : 'text-[#71717A]'} ${isActive ? '' : 'hover:text-black'}`}
+                            style={isActive ? { pointerEvents: 'none' } : {}}
+                          >
+                            <item.icon className={isActive ? 'text-white' : 'text-[#71717A]'} />
+                            <span className={`pl-4 ${isActive ? 'text-white' : 'text-[#71717A]'} font-inter`}>
+                              {item.title}
+                            </span>
+                          </a>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    );
+                  })}
               </SidebarMenu>
             </SidebarGroupContent>
 
@@ -119,7 +133,7 @@ export function AppSidebar() {
                 {items
                   .filter(item => item.title === "Geral")
                   .map(item => (
-                    <SidebarMenuItem key={item.title}>
+                    <SidebarMenuItem className="h-10" key={item.title}>
                       <SidebarMenuButton asChild>
                         <a href={item.url}>
                           <item.icon className="text-[#71717A] h-4 w-4" />
