@@ -25,6 +25,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const items = [
@@ -69,10 +70,10 @@ export function AppSidebar() {
                 >
                   <Avatar className="h-8 w-8 rounded-lg">
                     <AvatarImage />
-                    <AvatarFallback className="rounded-lg text-xs font-semibold">FA</AvatarFallback>
+                    <AvatarFallback className="rounded-lg text-xs font-semibold font-inter">FA</AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left ">
-                    <span className="truncate font-semibold text-[#3F3F46] text-sm">Filial A</span>
+                    <span className="truncate font-semibold text-[#3F3F46] font-inter text-sm">Filial A</span>
                   </div>
                   <ChevronsUpDown className="ml-auto size-4" />
                 </SidebarMenuButton>
@@ -93,7 +94,7 @@ export function AppSidebar() {
                 </DropdownMenuLabel>
               </DropdownMenuContent>
             </DropdownMenu>
-            <SidebarGroupLabel className="font-normal text-xs text-[#3F3F46] mt-4 mb-3.5">Menu</SidebarGroupLabel>
+            <SidebarGroupLabel className="font-normal text-xs text-[#3F3F46] mt-4 mb-3.5 font-inter">Menu</SidebarGroupLabel>
 
             <SidebarGroupContent>
               <SidebarMenu className="pl-1">
@@ -104,7 +105,7 @@ export function AppSidebar() {
                       <SidebarMenuButton asChild>
                         <a href={item.url}>
                           <item.icon className="text-[#71717A]" />
-                          <span className="pl-3 text-[#71717A]">{item.title}</span>
+                          <span className="pl-3 text-[#71717A font-inter]">{item.title}</span>
                         </a>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
@@ -112,7 +113,7 @@ export function AppSidebar() {
               </SidebarMenu>
             </SidebarGroupContent>
 
-            <SidebarGroupLabel className="font-normal text-xs text-[#3F3F46] mt-1.5 mb-3.5">Configurações</SidebarGroupLabel>
+            <SidebarGroupLabel className="font-normal text-xs text-[#3F3F46] mt-1.5 mb-3.5 font-inter">Configurações</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu className="pl-1">
                 {items
@@ -122,7 +123,7 @@ export function AppSidebar() {
                       <SidebarMenuButton asChild>
                         <a href={item.url}>
                           <item.icon className="text-[#71717A] h-4 w-4" />
-                          <span className="pl-3 text-[#71717A]">{item.title}</span>
+                          <span className="pl-3 text-[#71717A] font-inter">{item.title}</span>
                         </a>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
@@ -134,7 +135,7 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="bg-white flex p-8 flex-row items-center justify-between gap-2">
-        <h1 className="text-sm text-[#102822] font-normal">Precisa de ajuda?</h1>
+        <h1 className="text-sm text-[#102822] font-normal font-inter">Precisa de ajuda?</h1>
         <Headset className="w-4 h-4  text-[#3F3F46]" />
       </SidebarFooter>
 

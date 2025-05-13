@@ -3,11 +3,16 @@ const BASE_URL = "/api/user";
 export type User = {
   id: string;
   name: string;
+  email: string;
   age: number;
-  gender: "Masculino" | "Feminino" | "Outro";
+  gender: 0 | 1 | 2;
   sessionTime: string;
   lastLogin: string;
   active: boolean;
+  cpf?: string;
+  rg?: string;
+  phone?: string;
+  isWhatsApp?: boolean;
 };
 
 export const getUsers = async (): Promise<User[]> => {
@@ -20,16 +25,16 @@ export const getUsers = async (): Promise<User[]> => {
     return rawUsers.map((user: any) => ({
       id: user.id,
       name: user.name,
+      email: user.email,
       age: user.age,
-      gender:
-        user.gender === 0
-          ? "Masculino"
-          : user.gender === 1
-          ? "Feminino"
-          : "Outro",
+      gender: user.gender,
       sessionTime: user.sessionTime,
       lastLogin: user.lastLogin,
       active: user.active,
+      cpf: user.cpf,
+      rg: user.rg,
+      telefone: user.telefone,
+      isWhatsapp: user.isWhatsapp,
     }));
   } catch (error) {
     console.error("Erro ao buscar usuários:", error);

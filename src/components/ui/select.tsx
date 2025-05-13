@@ -3,6 +3,7 @@
 import * as React from "react"
 import * as SelectPrimitive from "@radix-ui/react-select"
 import { CheckIcon, ChevronsUpDown, ChevronUpIcon } from "lucide-react"
+import { FaAngleDown } from "react-icons/fa6";
 
 import { cn } from "@/lib/utils"
 
@@ -44,7 +45,7 @@ function SelectTrigger({
     >
       {children}
       <SelectPrimitive.Icon asChild>
-        <ChevronsUpDown className="size-4 opacity-50" />
+        <FaAngleDown className="size-4 opacity-50" />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
   )

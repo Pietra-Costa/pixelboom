@@ -5,25 +5,58 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { getUsers, User } from '@/lib/api';
+import { FiUser } from "react-icons/fi";
+import { mockUsers } from '@/lib/mockUsers';
+import { CiCalendar, CiClock2 } from 'react-icons/ci';
+import { LuTag } from "react-icons/lu";
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
+import { IoMdMore } from "react-icons/io";
+
+
 
 function getInitials(fullName: string) {
     const names = fullName.trim().split(' ');
-    return names[0]?.[0].toUpperCase() + (names[1]?.[0]?.toUpperCase() ?? '');
+    return names[0]?.[0] + (names[1]?.[0]?.toUpperCase() ?? '');
 }
 
 function Users() {
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(true);
 
+    const getGenderLabel = (gender: 0 | 1 | 2): string => {
+        switch (gender) {
+            case 0:
+                return "Homem";
+            case 1:
+                return "Mulher";
+            case 2:
+                return "Outro";
+        }
+    };
+
     useEffect(() => {
         async function loadUsers() {
-            console.log("Iniciando fetch dos usuários...");
+            setLoading(true);
             try {
-                const data = await getUsers();
-                console.log("Usuários carregados:", data);
-                setUsers(data);
+                const dataFromApi = await getUsers();
+
+                const combined = [...dataFromApi, ...mockUsers];
+
+                setUsers(combined);
             } catch (error) {
                 console.error('Erro ao buscar usuários:', error);
+
+                setUsers(mockUsers);
             } finally {
                 setLoading(false);
             }
@@ -34,54 +67,111 @@ function Users() {
 
     if (loading) return <p className="p-10">Carregando usuários...</p>;
 
+
     return (
         <div className="mt-5 ml-10 mr-10 space-y-4">
             {users.map((user) => (
                 <div
                     key={user.id}
-                    className="flex items-center justify-between p-4 border rounded-xl border-[#E4E4E7]"
+                    className="flex items-center h-24 mb-5 justify-between pl-3 pr-4 py-4 border rounded-xl border-[#E4E4E7]"
                 >
-                    <div className="flex items-center space-x-4">
-                        <Avatar className="h-10 w-10 rounded-lg">
-                            <AvatarFallback className="rounded-lg text-sm font-bold">
+                    <div className="flex items-center space-x-3">
+                        <Avatar className="h-14 w-14 rounded-lg">
+                            <AvatarFallback className="rounded-full text-base font-medium">
                                 {getInitials(user.name)}
                             </AvatarFallback>
                         </Avatar>
-                        <div>
-                            <p className="font-semibold text-lg">{user.name}</p>
-                            <p className="text-sm text-gray-500">
-                                {user.gender} · {user.age} anos
-                            </p>
+
+                        <div className="flex flex-col justify-center">
+                            <div className="flex items-center gap-3">
+                                <span className="font-medium font-inter text-sm text-[#18181B]">{user.name}</span>
+                                <span className="flex items-center gap-1 text-[#71717A] text-sm font-normal">
+                                    <FiUser className="text-[#A1A1AA] text-xs w-3 h-3 font-inter" />
+                                    {user.age} anos, {getGenderLabel(user.gender)}
+                                </span>
+                            </div>
+
+                            <div className="flex gap-3 text-sm text-gray-700 mt-1">
+
+                                <span className="flex items-center gap-1">
+                                    <CiCalendar className='text-[#A1A1AA] text-xs  w-3 h-3' />
+                                    <p className=' font-inter text-[#71717A] text-xs  font-normal'>{user.lastLogin}</p>
+                                </span>
+
+                                <span className="flex items-center gap-1">
+                                    <CiClock2 className='text-[#A1A1AA] text-xs  w-3 h-3' />
+                                    <p className=' font-inter text-[#71717A] text-xs font-normal'>{user.sessionTime}</p>
+                                </span>
+
+                                <span className="flex items-center gap-1">
+                                    <LuTag className='text-[#A1A1AA] text-xs  w-3 h-3' />
+                                    <p className=' font-inter text-[#71717A] text-xs font-normal'>Usuário Padrão</p>
+                                </span>
+
+                            </div>
+
                         </div>
                     </div>
-                    <div className="text-sm text-right">
-                        <p className="text-gray-700">
-                            Sessão há{' '}
-                            {formatDistanceToNow(new Date(user.sessionTime), {
-                                locale: ptBR,
-                            })}
-                            .
-                        </p>
-                        <p className="text-gray-700">
-                            Último login há{' '}
-                            {formatDistanceToNow(new Date(user.lastLogin), {
-                                locale: ptBR,
-                            })}
-                            .
-                        </p>
-                        <span
-                            className={`text-xs font-medium px-2 py-1 rounded ${user.active
-                                ? 'bg-green-100 text-green-700'
-                                : 'bg-red-100 text-red-700'
-                                }`}
-                        >
-                            {user.active ? 'Ativo' : 'Inativo'}
-                        </span>
-                    </div>
+
+                    <span
+                        className={`text-xs font-semibold ${user.active ? 'bg-[#F4F4F5] text-[#18181B] w-[49px] h-5 rounded-full flex items-center justify-center' : 'bg-white border border-[#e4e4e7] text-[#18181B] w-[57px] h-5 rounded-full flex items-center justify-center'}`}
+                    >
+                        {user.active ? 'Ativo' : 'Inativo'}
+                    </span>
+
+                    <button><IoMdMore /></button>
+
                 </div>
+
             ))}
-        </div>
+
+            <div className="flex items-center justify-between mb-10 mt-1">
+                <div className="text-sm text-[#74747a]">
+                    {`6 de 294 itens`}
+                </div>
+
+                <Pagination>
+                    <PaginationContent className='w-[372px]'>
+                        <PaginationItem>
+                            <PaginationPrevious href="#">Anterior</PaginationPrevious>
+                        </PaginationItem>
+                        <PaginationItem>
+                            <PaginationLink href="#">1</PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                            <PaginationLink href="#">2</PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                            <PaginationEllipsis />
+                        </PaginationItem>
+                        <PaginationItem>
+                            <PaginationLink href="#">58</PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                            <PaginationNext href="#">Próxima</PaginationNext>
+                        </PaginationItem>
+                    </PaginationContent>
+                </Pagination>
+
+
+                <div className="flex items-center">
+                    <span className="text-sm text-[#74747a] mr-2">Itens por página:</span>
+                    <Select defaultValue="10">
+                        <SelectTrigger className="p-2 text-sm border rounded w-[70px] h-[40px]">
+                            <SelectValue placeholder="Selecione" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="10">10</SelectItem>
+                            <SelectItem value="20">20</SelectItem>
+                            <SelectItem value="50">50</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+            </div>
+        </div >
+
     );
 }
 
 export default Users;
+
