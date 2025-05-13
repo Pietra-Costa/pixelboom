@@ -46,23 +46,28 @@ function Users() {
 
     useEffect(() => {
         async function loadUsers() {
-            setLoading(true);
             try {
                 const dataFromApi = await getUsers();
-
                 const combined = [...dataFromApi, ...mockUsers];
-
                 setUsers(combined);
             } catch (error) {
                 console.error('Erro ao buscar usuários:', error);
-
                 setUsers(mockUsers);
             } finally {
-                setLoading(false);
+                if (loading) {
+                    setLoading(false);
+                }
             }
         }
 
+        // Chama loadUsers a cada 5 segundos
+        const intervalId = setInterval(loadUsers, 5000);
+
+        // Chama loadUsers imediatamente na montagem
         loadUsers();
+
+        // Limpa o intervalo quando o componente é desmontado
+        return () => clearInterval(intervalId);
     }, []);
 
     if (loading) return <p className="p-10">Carregando usuários...</p>;
