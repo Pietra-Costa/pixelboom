@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Projeto Next.js - Plataforma Responsiva de Criação de Usuários
 
-## Getting Started
+Bem-vindo ao **Projeto Next.js**! ✨ Este é um sistema completo e **totalmente responsivo**, criado em **3 dias úteis** com base nos padrões de design do **Figma** e utilizando as mais modernas tecnologias. 
 
-First, run the development server:
+## 📋 Funcionalidades Principais
+
+### 🔥 **API Exclusiva para Criação de Usuários**
+A **API** foi desenvolvida **exclusivamente** para este projeto, permitindo a **criação de usuários diretamente no banco de dados**. Tudo funciona de maneira simples e rápida, com dados sendo registrados e gerenciados com eficiência. 
+
+### 🔍 **Barra de Pesquisa Funcional**
+Busque usuários com facilidade! A barra de pesquisa permite filtrar rapidamente os registros e encontrar qualquer usuário cadastrado no sistema. 🚀
+
+### 📱 **Design Responsivo**
+A plataforma foi projetada para ser **100% responsiva**. Seja no **desktop**, **tablet** ou **celular**, a experiência de uso é sempre fluida e adaptável a qualquer dispositivo. 📱💻
+
+### 🎨 **Padrões Fieis ao Figma**
+O layout foi **meticulosamente desenvolvido** para seguir os **padrões de design do Figma**, garantindo uma interface limpa, moderna e extremamente usável. 
+
+---
+
+## 🛠️ Tecnologias Usadas
+
+- **Next.js** - Framework para renderização do lado do servidor.
+- **React** - Biblioteca para interfaces de usuário interativas.
+- **Tailwind CSS** - Framework de estilização eficiente e flexível.
+- **API RESTful** - Endpoints dedicados à criação e gestão de usuários.
+- **Banco de Dados** - Armazenamento eficiente e seguro de dados dos usuários.
+- **Figma** - Design visual com foco na experiência do usuário.
+
+---
+
+## 💻 Como Rodar o Projeto
+
+Para rodar o servidor de desenvolvimento, basta executar um dos seguintes comandos:
 
 ```bash
 npm run dev
-# or
+# ou
 yarn dev
-# or
+# ou
 pnpm dev
-# or
+# ou
 bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
