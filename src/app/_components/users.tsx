@@ -24,14 +24,18 @@ import { IoMdMore } from "react-icons/io";
 import { format } from 'date-fns';
 import { MdFilterList } from 'react-icons/md';
 
+interface UsersProps {
+    users: User[];
+}
+
 function getInitials(fullName: string) {
     const names = fullName.trim().split(' ');
     return names[0]?.[0] + (names[1]?.[0]?.toUpperCase() ?? '');
 }
 
-function Users() {
-    const [users, setUsers] = useState<User[]>([]);
-    const [loading, setLoading] = useState(true);
+function Users({ users: initialUsers }: UsersProps) {
+    const [users, setUsers] = useState<User[]>(initialUsers);
+    const [loading, setLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
 
     const getGenderLabel = (gender: 0 | 1 | 2): string => {
@@ -44,43 +48,6 @@ function Users() {
                 return "Outro";
         }
     };
-
-    useEffect(() => {
-        async function loadUsers() {
-            try {
-                const dataFromApi = await getUsers();
-                const combined = [...dataFromApi, ...mockUsers];
-
-                const sortedUsers = combined.sort((a, b) => {
-                    if (a.sessionTime && b.sessionTime) {
-                        const timeA = Number(new Date(a.sessionTime).getTime());
-                        const timeB = Number(new Date(b.sessionTime).getTime());
-
-                        return timeB - timeA;
-                    }
-                    const idA = Number(a.id);
-                    const idB = Number(b.id);
-
-                    return idB - idA;
-                });
-
-                setUsers(sortedUsers);
-            } catch (error) {
-                console.error('Erro ao buscar usuários:', error);
-                setUsers(mockUsers);
-            } finally {
-                if (loading) {
-                    setLoading(false);
-                }
-            }
-        }
-
-        const intervalId = setInterval(loadUsers, 5000);
-
-        loadUsers();
-
-        return () => clearInterval(intervalId);
-    }, []);
 
     const filteredUsers = users.filter(user =>
         user.name.toLowerCase().includes(searchTerm.toLowerCase())

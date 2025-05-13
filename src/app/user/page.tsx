@@ -48,7 +48,6 @@ const User = () => {
 
     try {
       const newUser = await createUser({
-        id: uuidv4(),
         name,
         email,
         phone: telefone,
